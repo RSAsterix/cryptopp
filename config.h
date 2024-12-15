@@ -19,6 +19,11 @@
 #ifndef CRYPTOPP_CONFIG_H
 #define CRYPTOPP_CONFIG_H
 
+#ifdef __GNUC__
+#pragma GCC diagnostic ignored "-Wundef"
+#pragma GCC diagnostic push
+#endif
+
 #include "config_align.h"
 #include "config_asm.h"
 #include "config_cpu.h"
@@ -29,5 +34,9 @@
 #include "config_ns.h"
 #include "config_os.h"
 #include "config_ver.h"
+
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
 
 #endif // CRYPTOPP_CONFIG_H
