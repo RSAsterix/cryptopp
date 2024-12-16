@@ -47,7 +47,7 @@
 // Also see https://bugs.llvm.org/show_bug.cgi?id=39895 .
 // #define CRYPTOPP_DISABLE_MIXED_ASM 1
 
-#if defined(__clang__) || (defined(__APPLE__) && defined(__GNUC__)) || defined(__SUNPRO_CC)
+#if (defined(__clang__) && !defined(__INTEL_LLVM_COMPILER)) || (defined(__APPLE__) && defined(__GNUC__)) || defined(__SUNPRO_CC)
 # undef CRYPTOPP_DISABLE_MIXED_ASM
 # define CRYPTOPP_DISABLE_MIXED_ASM 1
 #endif
@@ -78,7 +78,7 @@
 // Guard everything in CRYPTOPP_DISABLE_ASM
 #if !defined(CRYPTOPP_DISABLE_ASM)
 
-#if (defined(_MSC_VER) && defined(_M_IX86)) || ((defined(__GNUC__) && (defined(__i386__)) || defined(__x86_64__)))
+#if (defined(_MSC_VER) && defined(_M_IX86)) || ((defined(__GNUC__) && (defined(__i386__)) || (defined(__x86_64__) && !defined(_M_X64))))
 	// C++Builder 2010 does not allow "call label" where label is defined within inline assembly
 	#define CRYPTOPP_X86_ASM_AVAILABLE 1
 
