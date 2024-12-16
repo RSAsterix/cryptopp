@@ -226,15 +226,15 @@
 // Also see https://github.com/weidai11/cryptopp/issues/980. I'm not sure what
 // to do when the compiler defines __cpp_lib_uncaught_exceptions but the platform
 // does not support std::uncaught_exceptions. What was Apple thinking???
-#if defined(__clang__)
+#if (CRYPTOPP_MSC_VERSION >= 1900) || (CRYPTOPP_INTEL_COMPILER >= 1800) || \
+	(CRYPTOPP_GCC_VERSION >= 60000) || (__cpp_lib_uncaught_exceptions >= 201411L)
+# define CRYPTOPP_CXX17_UNCAUGHT_EXCEPTIONS 1
+#elif defined(__clang__)
 # if __EXCEPTIONS && __has_feature(cxx_exceptions)
 #  if __cpp_lib_uncaught_exceptions >= 201411L
 #   define CRYPTOPP_CXX17_UNCAUGHT_EXCEPTIONS 1
 #  endif
 # endif
-#elif (CRYPTOPP_MSC_VERSION >= 1900) || (CRYPTOPP_INTEL_COMPILER >= 1800) || \
-      (CRYPTOPP_GCC_VERSION >= 60000) || (__cpp_lib_uncaught_exceptions >= 201411L)
-# define CRYPTOPP_CXX17_UNCAUGHT_EXCEPTIONS 1
 #endif // uncaught_exceptions compilers
 
 #endif  // CRYPTOPP_CXX17
