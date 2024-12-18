@@ -90,27 +90,18 @@
 
 // ***************** C++11 and above ********************
 
-#if defined(__INTEL_COMPILER)
-	#define CRYPTOPP_INTEL_COMPILER __INTEL_COMPILER
-#elif defined(__INTEL_LLVM_COMPILER)
-	#define CRYPTOPP_INTEL_COMPILER __INTEL_LLVM_COMPILER
-#else
-	#define CRYPTOPP_INTEL_COMPILER 0
-#endif
-
-
 #if defined(CRYPTOPP_CXX11)
 
 // atomics: MS at VS2012 (17.00); GCC at 4.4; Clang at 3.1/3.2; Intel 13.0; SunCC 5.14.
 #if (CRYPTOPP_MSC_VERSION >= 1700) || __has_feature(cxx_atomic) || \
-	(CRYPTOPP_INTEL_COMPILER >= 1300) || (CRYPTOPP_GCC_VERSION >= 40400) || (__SUNPRO_CC >= 0x5140)
+	(CRYPTOPP_INTEL_VERSION >= 1300) || (CRYPTOPP_GCC_VERSION >= 40400) || (__SUNPRO_CC >= 0x5140)
 # define CRYPTOPP_CXX11_ATOMIC 1
 #endif // atomics
 
 // synchronization: MS at VS2012 (17.00); GCC at 4.4; Clang at 3.3; Xcode 5.0; Intel 12.0; SunCC 5.13.
 // TODO: verify Clang and Intel versions; find __has_feature(x) extension for Clang
 #if (CRYPTOPP_MSC_VERSION >= 1700) || (CRYPTOPP_LLVM_CLANG_VERSION >= 30300) || \
-	(CRYPTOPP_APPLE_CLANG_VERSION >= 50000) || (CRYPTOPP_INTEL_COMPILER >= 1200) || \
+	(CRYPTOPP_APPLE_CLANG_VERSION >= 50000) || (CRYPTOPP_INTEL_VERSION >= 1200) || \
 	(CRYPTOPP_GCC_VERSION >= 40400) || (__SUNPRO_CC >= 0x5130)
 // Hack ahead. New GCC compilers like GCC 6 on AIX 7.0 or earlier as well as original MinGW
 // don't have the synchronization gear. However, Wakely's test used for Apple does not work
@@ -131,51 +122,51 @@
 #if (__cpp_threadsafe_static_init >= 200806) || \
 	(CRYPTOPP_MSC_VERSION >= 1900) && ((WINVER >= 0x0600) || (_WIN32_WINNT >= 0x0600)) || \
 	(CRYPTOPP_LLVM_CLANG_VERSION >= 20900) || (CRYPTOPP_APPLE_CLANG_VERSION >= 40000)  || \
-	(CRYPTOPP_INTEL_COMPILER >= 1110) || (CRYPTOPP_GCC_VERSION >= 40300) || (__SUNPRO_CC >= 0x5130)
+	(CRYPTOPP_INTEL_VERSION >= 1110) || (CRYPTOPP_GCC_VERSION >= 40300) || (__SUNPRO_CC >= 0x5130)
 # define CRYPTOPP_CXX11_STATIC_INIT 1
 #endif // Dynamic Initialization compilers
 
 // deleted functions: MS at VS2013 (18.00); GCC at 4.3; Clang at 2.9; Intel 12.1; SunCC 5.13.
 #if (CRYPTOPP_MSC_VERSION >= 1800) || (CRYPTOPP_LLVM_CLANG_VERSION >= 20900) || \
-	(CRYPTOPP_APPLE_CLANG_VERSION >= 40000) || (CRYPTOPP_INTEL_COMPILER >= 1210) || \
+	(CRYPTOPP_APPLE_CLANG_VERSION >= 40000) || (CRYPTOPP_INTEL_VERSION >= 1210) || \
 	(CRYPTOPP_GCC_VERSION >= 40300) || (__SUNPRO_CC >= 0x5130)
 # define CRYPTOPP_CXX11_DELETED_FUNCTIONS 1
 #endif // deleted functions
 
 // alignof/alignas: MS at VS2015 (19.00); GCC at 4.8; Clang at 3.0; Intel 15.0; SunCC 5.13.
 #if (CRYPTOPP_MSC_VERSION >= 1900) || __has_feature(cxx_alignas) || \
-	(CRYPTOPP_INTEL_COMPILER >= 1500) || (CRYPTOPP_GCC_VERSION >= 40800) || (__SUNPRO_CC >= 0x5130)
+	(CRYPTOPP_INTEL_VERSION >= 1500) || (CRYPTOPP_GCC_VERSION >= 40800) || (__SUNPRO_CC >= 0x5130)
 #  define CRYPTOPP_CXX11_ALIGNAS 1
 #endif // alignas
 
 // alignof: MS at VS2015 (19.00); GCC at 4.5; Clang at 2.9; Intel 15.0; SunCC 5.13.
 #if (CRYPTOPP_MSC_VERSION >= 1900) || __has_feature(cxx_alignof) || \
-	(CRYPTOPP_INTEL_COMPILER >= 1500) || (CRYPTOPP_GCC_VERSION >= 40500) || (__SUNPRO_CC >= 0x5130)
+	(CRYPTOPP_INTEL_VERSION >= 1500) || (CRYPTOPP_GCC_VERSION >= 40500) || (__SUNPRO_CC >= 0x5130)
 #  define CRYPTOPP_CXX11_ALIGNOF 1
 #endif // alignof
 
 // initializer lists: MS at VS2013 (18.00); GCC at 4.4; Clang at 3.1; Intel 14.0; SunCC 5.13.
 #if (CRYPTOPP_MSC_VERSION >= 1800) || (CRYPTOPP_LLVM_CLANG_VERSION >= 30100) || \
-	(CRYPTOPP_APPLE_CLANG_VERSION >= 40000) || (CRYPTOPP_INTEL_COMPILER >= 1400) || \
+	(CRYPTOPP_APPLE_CLANG_VERSION >= 40000) || (CRYPTOPP_INTEL_VERSION >= 1400) || \
 	(CRYPTOPP_GCC_VERSION >= 40400) || (__SUNPRO_CC >= 0x5130)
 #  define CRYPTOPP_CXX11_INITIALIZER_LIST 1
 #endif // alignas
 
 // lambdas: MS at VS2012 (17.00); GCC at 4.9; Clang at 3.3; Intel 12.0; SunCC 5.14.
 #if (CRYPTOPP_MSC_VERSION >= 1700) || __has_feature(cxx_lambdas) || \
-	(CRYPTOPP_INTEL_COMPILER >= 1200) || (CRYPTOPP_GCC_VERSION >= 40900) || (__SUNPRO_CC >= 0x5140)
+	(CRYPTOPP_INTEL_VERSION >= 1200) || (CRYPTOPP_GCC_VERSION >= 40900) || (__SUNPRO_CC >= 0x5140)
 #  define CRYPTOPP_CXX11_LAMBDA 1
 #endif // lambdas
 
 // noexcept: MS at VS2015 (19.00); GCC at 4.6; Clang at 3.0; Intel 14.0; SunCC 5.13.
 #if (CRYPTOPP_MSC_VERSION >= 1900) || __has_feature(cxx_noexcept) || \
-	(CRYPTOPP_INTEL_COMPILER >= 1400) || (CRYPTOPP_GCC_VERSION >= 40600) || (__SUNPRO_CC >= 0x5130)
+	(CRYPTOPP_INTEL_VERSION >= 1400) || (CRYPTOPP_GCC_VERSION >= 40600) || (__SUNPRO_CC >= 0x5130)
 # define CRYPTOPP_CXX11_NOEXCEPT 1
 #endif // noexcept compilers
 
 // variadic templates: MS at VS2013 (18.00); GCC at 4.3; Clang at 2.9; Intel 12.1; SunCC 5.13.
 #if (__cpp_variadic_templates >= 200704) || __has_feature(cxx_variadic_templates) || \
-	(CRYPTOPP_MSC_VERSION >= 1800) || (CRYPTOPP_INTEL_COMPILER >= 1210) || \
+	(CRYPTOPP_MSC_VERSION >= 1800) || (CRYPTOPP_INTEL_VERSION >= 1210) || \
 	(CRYPTOPP_GCC_VERSION >= 40300) || (__SUNPRO_CC >= 0x5130)
 # define CRYPTOPP_CXX11_VARIADIC_TEMPLATES 1
 #endif // variadic templates
@@ -183,7 +174,7 @@
 // constexpr: MS at VS2015 (19.00); GCC at 4.6; Clang at 3.1; Intel 16.0; SunCC 5.13.
 // Intel has mis-supported the feature since at least ICPC 13.00
 #if (__cpp_constexpr >= 200704) || __has_feature(cxx_constexpr) || \
-	(CRYPTOPP_MSC_VERSION >= 1900) || (CRYPTOPP_INTEL_COMPILER >= 1600) || \
+	(CRYPTOPP_MSC_VERSION >= 1900) || (CRYPTOPP_INTEL_VERSION >= 1600) || \
 	(CRYPTOPP_GCC_VERSION >= 40600) || (__SUNPRO_CC >= 0x5130)
 # define CRYPTOPP_CXX11_CONSTEXPR 1
 #endif // constexpr compilers
@@ -191,13 +182,13 @@
 // strong typed enums: MS at VS2012 (17.00); GCC at 4.4; Clang at 3.3; Intel 14.0; SunCC 5.12.
 // Mircorosft and Intel had partial support earlier, but we require full support.
 #if (CRYPTOPP_MSC_VERSION >= 1700) || __has_feature(cxx_strong_enums) || \
-	(CRYPTOPP_INTEL_COMPILER >= 1400) || (CRYPTOPP_GCC_VERSION >= 40400) || (__SUNPRO_CC >= 0x5120)
+	(CRYPTOPP_INTEL_VERSION >= 1400) || (CRYPTOPP_GCC_VERSION >= 40400) || (__SUNPRO_CC >= 0x5120)
 # define CRYPTOPP_CXX11_STRONG_ENUM 1
 #endif // constexpr compilers
 
 // nullptr_t: MS at VS2010 (16.00); GCC at 4.6; Clang at 3.3; Intel 10.0; SunCC 5.13.
 #if (CRYPTOPP_MSC_VERSION >= 1600) || __has_feature(cxx_nullptr) || \
-	(CRYPTOPP_INTEL_COMPILER >= 1000) || (CRYPTOPP_GCC_VERSION >= 40600) || \
+	(CRYPTOPP_INTEL_VERSION >= 1000) || (CRYPTOPP_GCC_VERSION >= 40600) || \
     (__SUNPRO_CC >= 0x5130) || defined(__IBMCPP_NULLPTR)
 # define CRYPTOPP_CXX11_NULLPTR 1
 #endif // nullptr_t compilers
@@ -226,7 +217,7 @@
 // Also see https://github.com/weidai11/cryptopp/issues/980. I'm not sure what
 // to do when the compiler defines __cpp_lib_uncaught_exceptions but the platform
 // does not support std::uncaught_exceptions. What was Apple thinking???
-#if (CRYPTOPP_MSC_VERSION >= 1900) || (CRYPTOPP_INTEL_COMPILER >= 1800) || \
+#if (CRYPTOPP_MSC_VERSION >= 1900) || (CRYPTOPP_INTEL_VERSION >= 1800) || \
 	(CRYPTOPP_GCC_VERSION >= 60000) || (__cpp_lib_uncaught_exceptions >= 201411L)
 # define CRYPTOPP_CXX17_UNCAUGHT_EXCEPTIONS 1
 #elif defined(__clang__)

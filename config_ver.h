@@ -82,6 +82,9 @@
 #if defined(__INTEL_COMPILER) && !defined(__clang__)
 # undef CRYPTOPP_LLVM_CLANG_VERSION
 # define CRYPTOPP_INTEL_VERSION (__INTEL_COMPILER)
+#elif defined(__INTEL_LLVM_COMPILER)
+# undef CRYPTOPP_LLVM_CLANG_VERSION
+# define CRYPTOPP_INTEL_VERSION (__INTEL_LLVM_COMPILER)
 #endif
 
 #if defined(_MSC_VER) && !defined(__clang__)

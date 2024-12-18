@@ -23,7 +23,7 @@ set(Source_Files
     misc.cpp modes.cpp mqueue.cpp mqv.cpp nbtheory.cpp oaep.cpp osrng.cpp
     padlkrng.cpp panama.cpp pkcspad.cpp poly1305.cpp polynomi.cpp
     ppc_simd.cpp primetab.cpp pssr.cpp pubkey.cpp queue.cpp rabbit.cpp
-    rabin.cpp randpool.cpp rc2.cpp rc5.cpp rc6.cpp rdrand.cpp rdtables.cpp
+    rabin.cpp randpool.cpp rc2.cpp rc5.cpp rc6.cpp rdtables.cpp
     rijndael.cpp rijndael_simd.cpp ripemd.cpp rng.cpp rsa.cpp rw.cpp
     safer.cpp salsa.cpp scrypt.cpp seal.cpp seed.cpp serpent.cpp sha.cpp
     sha3.cpp sha_simd.cpp shacal2.cpp shacal2_simd.cpp shake.cpp shark.cpp
@@ -49,29 +49,37 @@ if (${BUILDING_ARM})
     set(Source_Files ${Source_Files} neon_simd.cpp)
 else ()
     set(Source_Files ${Source_Files} rdrand.cpp)
-
-    if (${BUILDING_64BIT})
-        set(ASM_Files ${ASM_Files}
-            x64masm.asm
-            x64dll.asm
-            cpuid64.asm)
-    endif ()
 endif ()
 
 add_library(cryptlib STATIC ${Source_Files})
 
-foreach(file ${ASM_Files})
+macro(compile_asm file options)
+    if (${BUILDING_64BIT})
+        set(ASM_COMPILER ml64)
+    else ()
+        set(ASM_COMPILER ml)
+    endif ()
     set(asm_file "${CMAKE_CURRENT_LIST_DIR}/${file}")
     set(obj_file "${CMAKE_CURRENT_BINARY_DIR}/${file}.obj")
 
     add_custom_command(
         OUTPUT ${obj_file}
-        COMMAND ml64 /Fo ${obj_file} /c ${asm_file}
+        COMMAND ${ASM_COMPILER} ${options} /Fo ${obj_file} /c ${asm_file}
         DEPENDS ${asm_file}
         COMMENT "Assembling ${file}")
 
     target_sources(cryptlib PRIVATE ${obj_file})
-endforeach()
+endmacro()
+
+if (WIN32)
+    if (${BUILDING_64BIT})
+        compile_asm(x64masm.asm /nologo /D_M_X64 /W3 /Cx /Zi)
+        compile_asm(x64dll.asm /nologo /D_M_X64 /W3 /Zi)
+        compile_asm(cpuid64.asm /nologo /D_M_X64 /W3 /Zi)
+    else ()
+        target_compile_definitions(cryptlib PRIVATE CRYPTOPP_DISABLE_ASM)
+    endif ()
+endif ()
 
 target_compile_options(cryptlib PRIVATE /FI sdkddkver.h -maes)
 
@@ -89,4 +97,8 @@ if (${BUILDING_32BIT})
     target_compile_options(cryptlib PRIVATE /arch:SSE2)
 else ()
     target_compile_options(cryptlib PRIVATE /arch:AVX2)
+endif ()
+
+if (WIN32)
+    target_link_libraries(cryptlib PRIVATE bcrypt)
 endif ()
