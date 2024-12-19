@@ -107,4 +107,6 @@ if (WIN32)
     endif ()
 
     target_link_libraries(cryptlib PRIVATE bcrypt)
+else ()
+    target_compile_options(cryptlib PRIVATE -Wno-cast-qual)
 endif ()
